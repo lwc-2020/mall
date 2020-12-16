@@ -3,9 +3,7 @@ package com.icis.controller;
 import com.icis.pojo.UserInfo;
 import com.icis.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,4 +27,51 @@ public class UserInfoController {
     public List<UserInfo> findByUserInfo(UserInfo userInfo){
         return this.userInfoService.findByUserInfo(userInfo);
     }
+    //根据主键字段进行查询，方法参数必须包含完整的主键属性，查询条件使用等号
+    @GetMapping("/getUserById")
+    public UserInfo getUserById(UserInfo userInfo){
+        return this.userInfoService.getUserById(userInfo);
+    }
+
+    @PostMapping("/addUser")
+    public String addUser(@RequestBody UserInfo userInfo){
+        //调用service保存数据
+        this.userInfoService.addUser(userInfo);
+        return "添加成功";
+    }
+    @GetMapping("/findUserByLike")
+    public List<UserInfo> findByLike(UserInfo userInfo){
+        //根据名字模糊查询用户
+        return userInfoService.findByUserLike(userInfo);
+    }
+    //根据模糊查询，查询总记录数
+    @GetMapping("/getCount")
+    public int getCount(UserInfo userInfo){
+        return userInfoService.getCount(userInfo);
+    }
+    //根据主键更新实体全部字段，null值会被更新
+    @PostMapping("/updateAllById")
+    public String updateAllById(@RequestBody UserInfo userInfo){
+        userInfoService.updateAll(userInfo);
+        return "修改成功";
+    }
+    //根据主键更新属性不为null的值
+    @PostMapping("/updateNotNull")
+    public String updatePrimaryNotNull(@RequestBody UserInfo userInfo){
+        userInfoService.updatePrimaryNotNull(userInfo);
+        return "修改成功";
+    }
+    //根据实体属性作为条件进行删除，查询条件使用等号
+    @PostMapping("/deleteBy")
+    public String deleteBy(UserInfo userInfo){
+        userInfoService.deleteByName(userInfo);
+        return "删除成功";
+    }
+    //根据主键字段进行删除，方法参数必须包含完整的主键属性
+    @PostMapping("/deleteById")
+    public String deleteById(UserInfo userInfo){
+        userInfoService.deleteById(userInfo);
+        return "删除成功";
+    }
+
 }
